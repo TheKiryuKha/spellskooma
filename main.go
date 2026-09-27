@@ -1,14 +1,21 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/go-vgo/robotgo"
+	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/mp3"
+	"github.com/gopxl/beep/speaker"
 	hook "github.com/robotn/gohook"
+
+	_ "embed"
 )
 
 // Amount of casts to reach out 10 levels in magic school
@@ -17,6 +24,9 @@ import (
 // 100 * 10 levels = 1000
 // 1000 / 4 exp per cast = 250
 const casts = 250
+
+//go:embed assets/level_up.mp3
+var levelUpSound []byte
 
 func main() {
 	args := os.Args
@@ -48,9 +58,30 @@ func cast(key string, delay int) {
 		}
 
 		fmt.Printf("U should already have +10 levels in ur magic school!")
+		playLevelUpSound()
+
 		hook.End()
 	})
 
 	s := hook.Start()
 	<-hook.Process(s)
+}
+
+func playLevelUpSound() {
+	reader := io.NopCloser(bytes.NewReader(levelUpSound))
+
+	streamer, format, err := mp3.Decode(reader)
+	if err != nil {
+		log.Fatalf("failed to decode melody file: %v", err)
+	}
+	defer streamer.Close()
+
+	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	done := make(chan bool)
+
+	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		done <- true
+	})))
+
+	<-done
 }
