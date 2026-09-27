@@ -22,10 +22,10 @@ func main() {
 	}
 	key := args[2]
 
-	fmt.Printf("Typing key %s with interval %d seconds \n", key, sleep)
+	fmt.Printf("Typing key %s with interval %d miliseconds \n", key, sleep)
 
 	for {
 		robotgo.KeyTap(key)
-		time.Sleep(time.Duration(sleep) * time.Second)
+		time.Sleep(time.Duration(sleep) * time.Millisecond)
 	}
 }
