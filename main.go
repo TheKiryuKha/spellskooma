@@ -25,7 +25,10 @@ func main() {
 	fmt.Printf("Typing key %s with interval %d miliseconds \n", key, sleep)
 
 	for {
-		robotgo.KeyTap(key)
+		robotgo.KeyDown(key)
+		time.Sleep(50 * time.Millisecond)
+		robotgo.KeyUp(key)
+
 		time.Sleep(time.Duration(sleep) * time.Millisecond)
 	}
 }
