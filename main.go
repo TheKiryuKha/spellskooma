@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/go-vgo/robotgo"
+	hook "github.com/robotn/gohook"
 )
 
 func main() {
@@ -24,11 +25,22 @@ func main() {
 
 	fmt.Printf("Typing key %s with interval %d miliseconds \n", key, delay)
 
-	for {
-		robotgo.KeyDown(key)
-		time.Sleep(50 * time.Millisecond)
-		robotgo.KeyUp(key)
+	cast(key, delay)
+}
 
-		time.Sleep(time.Duration(delay) * time.Millisecond)
-	}
+func cast(key string, delay int) {
+	fmt.Printf("==== Type %s to start casting ==== \n", key)
+
+	hook.Register(hook.KeyDown, []string{key}, func(e hook.Event) {
+		for {
+			robotgo.KeyDown(key)
+			time.Sleep(50 * time.Millisecond)
+			robotgo.KeyUp(key)
+
+			time.Sleep(time.Duration(delay) * time.Millisecond)
+		}
+	})
+
+	s := hook.Start()
+	<-hook.Process(s)
 }

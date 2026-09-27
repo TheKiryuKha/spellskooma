@@ -3,11 +3,15 @@ module github.com/TheKiryuKha/spellskooma
 go 1.26.3
 
 require (
+	github.com/go-vgo/robotgo v1.1.0
+	github.com/robotn/gohook v0.42.3
+)
+
+require (
 	github.com/dblohm7/wingoes v0.0.0-20260526185140-fb298caac7ca // indirect
 	github.com/ebitengine/purego v0.10.1 // indirect
 	github.com/gen2brain/shm v0.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
-	github.com/go-vgo/robotgo v1.1.0 // indirect
 	github.com/godbus/dbus/v5 v5.2.2 // indirect
 	github.com/jezek/xgb v1.3.1 // indirect
 	github.com/jezek/xgbutil v0.0.0-20260124183602-9fd151d6a51a // indirect
